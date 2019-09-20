@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -ex
 stable=$1
-stable_patch=0
+stable_patch=1
 rc_patch=0
 next_patch=0
 
