@@ -24,13 +24,21 @@
     call $@
   }
 
-# cd functions
+# Directory functions
   function cd_projects {
     cd $PROJECTS_DIR
   }
 
   function cd_target {
     cd "$PROJECTS_DIR/$TARGET"
+  }
+
+  function mk_projects {
+    mkdir $PROJECTS_DIR
+  }
+
+  function rm_projects {
+    rm -rf $PROJECTS_DIR
   }
 
 function exit_on_failure {

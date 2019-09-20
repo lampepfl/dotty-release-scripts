@@ -3,7 +3,7 @@
 # Import Mechanism
   # https://stackoverflow.com/a/246128
   ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/src/ecosystem"
-  PROJECTS_DIR="$(pwd)"
+  PROJECTS_DIR="$(pwd)/ecosystem_projects"
   PROJECT_SCRIPTS_DIR="$ROOT_DIR/projects"
   function load {
     . $ROOT_DIR/"$1.sh"
@@ -49,11 +49,13 @@
   }
 
   function main {
+    mk_projects
     for project_path in "$PROJECT_SCRIPTS_DIR"/*.sh; do
       project_filename=$(basename $project_path)
       project=${project_filename%.sh}  # Remove extension
       handle_project $project
     done
+    rm_projects
   }
 
 main
