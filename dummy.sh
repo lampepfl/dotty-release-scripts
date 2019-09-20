@@ -6,5 +6,7 @@ function load {
   . $ROOT_DIR/"$1.sh"
 }
 
-load dummydir/dummy-lib
-load dummydir/dummy-lib
+load ecosystem/constants
+load dummy-lib
+
+dostuff

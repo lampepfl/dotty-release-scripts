@@ -19,6 +19,20 @@
     $FUNCTION ${@:2}
   }
 
+  function call_verbose {
+    echo "Calling $1 on $TARGET"
+    call $@
+  }
+
+# cd functions
+  function cd_projects {
+    cd $PROJECTS_DIR
+  }
+
+  function cd_target {
+    cd "$PROJECTS_DIR/$TARGET"
+  }
+
 function exit_on_failure {
   if ! $1 ${@:2}; then
     echo "Fatal failure: $@"

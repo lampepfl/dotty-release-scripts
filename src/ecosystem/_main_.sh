@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+# Import Mechanism
+  # https://stackoverflow.com/a/246128
+  ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/src/ecosystem"
+  PROJECTS_DIR="$(pwd)"
+  PROJECT_SCRIPTS_DIR="$ROOT_DIR/projects"
+  function load {
+    . $ROOT_DIR/"$1.sh"
+  }
+
+# Imports
+  load constants
+  load standard_procedure
+  load lib/util
+  load lib/workflow
+
+# Version-related variables
+  stable=$1
+  live=$2  # Push changes to github if it is defined
+
+  stable_patch=1
+  rc_patch=1
+  next_patch=0
+
+  rc="$(($stable+1))"
+  next="$(($rc+1))"
+
+  stable_version="0.$stable.$stable_patch"
+  rc_version_preview="0.$rc.$rc_patch"
+  rc_version="$rc_version_preview-RC1"
+  next_version="0.$next.$next_patch"
+  stable_branch="0.$stable.x"
+  rc_branch="0.$rc.x"
+
+# Guards
+  if [ -z "$(which gsed)" ]
+  then
+    echo "Please install gsed to use this script – see e.g. https://stackoverflow.com/q/30003570"
+    exit 1
+  fi
+
+# Main logic
+  function handle_project {
+    project=$1
+    project_file="$PROJECT_SCRIPTS_DIR/$1.sh"
+    . $project_file
+    process $project
+  }
+
+  function main {
+    for project_path in "$PROJECT_SCRIPTS_DIR"/*.sh; do
+      project_filename=$(basename $project_path)
+      project=${project_filename%.sh}  # Remove extension
+      handle_project $project
+    done
+  }
+
+main

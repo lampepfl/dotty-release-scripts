@@ -1,25 +1,19 @@
 #!/usr/bin/env bash
-load util
-load workflow
 
 function process {
+  cd_projects
+  rm -rf *
   with_target $1
-    call deploy
-    call update
-    exit_on_failure call test
-    call publish
-    call cleanup
+    call_verbose deploy
+    call_verbose update
+    exit_on_failure call_verbose test
+    call_verbose publish
   end_with_target
 }
 
 function deploy_default {
   git clone https://github.com/lampepfl/$TARGET.git
-  cd $TARGET
-}
-
-function cleanup_default {
-  cd ..
-  rm -rf $TARGET
+  cd_target
 }
 
 function test_default {
