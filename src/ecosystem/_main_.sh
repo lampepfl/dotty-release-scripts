@@ -58,4 +58,5 @@
     rm_projects
   }
 
-main
+# main
+handle_project scastie

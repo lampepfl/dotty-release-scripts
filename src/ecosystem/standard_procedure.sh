@@ -9,7 +9,6 @@ function process {
     call_verbose update
     exit_on_failure call_verbose test
     call_verbose publish
-    call_verbose submit_pr
   end_with_target
 }
 
@@ -23,7 +22,12 @@ function init_vars_default {
 }
 
 function deploy_default {
-  git clone https://github.com/lampepfl/$TARGET.git
+  if [ ! -z $UPSTREAM ]; then
+    TARGET_URL="https://github.com/$UPSTREAM.git"
+  else
+    TARGET_URL="https://github.com/lampepfl/$TARGET.git"
+  fi
+  git clone "$TARGET_URL"
 }
 
 function test_default {
@@ -36,9 +40,9 @@ function update_default {
 }
 
 function publish_default {
-  if [ ! -z $UPSTREAM ] && [ ! -z ORIGIN_BRANCH ] && [ ! -z UPSTREAM_BRANCH ]; then
+  if [ ! -z $UPSTREAM ] && [ ! -z UPSTREAM_BRANCH ]; then
     ORIGIN_BRANCH="dotty-release-$rc_version"
-    git remote add staging https://github.com/dotty-staging/$TARGET
+    git remote add staging https://github.com/dotty-staging/$TARGET.git
     git checkout -b $ORIGIN_BRANCH
     git commit -am "Upgrade Dotty to $rc_version"
     push -u staging
