@@ -50,7 +50,7 @@
 
   function main {
     mk_projects
-    for project_path in "$PROJECT_SCRIPTS_DIR"/*.sh; do
+    for project_path in "$PROJECT_SCRIPTS_DIR"/dotty.sh; do
       project_filename=$(basename $project_path)
       project=${project_filename%.sh}  # Remove extension
       handle_project $project
@@ -58,5 +58,4 @@
     rm_projects
   }
 
-# main
-handle_project scastie
+main
