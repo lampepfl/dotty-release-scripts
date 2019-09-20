@@ -1,25 +1,34 @@
 #!/usr/bin/env bash
 set -ex
-stable=$1
-stable_patch=1
-rc_patch=0
-next_patch=0
-
-rc="$(($stable+1))"
-next="$(($rc+1))"
-
-stable_version="0.$stable.$stable_patch"
-rc_version_preview="0.$rc.$rc_patch"
-rc_version="$rc_version_preview-RC1"
-next_version="0.$next.$next_patch"
-stable_branch="0.$stable.x"
-rc_branch="0.$rc.x"
 
 if [ -z "$(which gsed)" ]
 then
   echo "Please install gsed to use this script – see e.g. https://stackoverflow.com/q/30003570"
   exit 1
 fi
+
+function init_vars {
+  if [ -z $1 ]
+  then
+    echo "To use this command you must provide the stable version number as the second command line argument"
+    exit 1
+  fi
+
+  stable=$1
+  stable_patch=1
+  rc_patch=0
+  next_patch=0
+
+  rc="$(($stable+1))"
+  next="$(($rc+1))"
+
+  stable_version="0.$stable.$stable_patch"
+  rc_version_preview="0.$rc.$rc_patch"
+  rc_version="$rc_version_preview-RC1"
+  next_version="0.$next.$next_patch"
+  stable_branch="0.$stable.x"
+  rc_branch="0.$rc.x"
+}
 
 function set_version {
   version="$1"
@@ -33,7 +42,8 @@ function release {
   git tag "$version"
 }
 
-function reset {
+function _public_reset {
+  init_vars $1
   git branch -D "$rc_branch"
   git tag -d "$rc_version" "$stable_version"
   git checkout "$stable_branch"
@@ -42,7 +52,9 @@ function reset {
   git reset --hard origin/master
 }
 
-function main {
+function _public_prepare {
+  init_vars $1
+
   # On branch 0.17.x, set baseVersion to 0.17.0 and git tag it as 0.17.0
   git checkout "$stable_branch"
   release "$stable_version"
@@ -57,9 +69,10 @@ function main {
   git checkout master
   set_version "$next_version"
   git commit -am "Set baseVersion to $next_version"
+}
 
-  # Push
+function _public_release {
   git push --atomic --tags origin master "$stable_branch" "$rc_branch"
 }
 
-main
+"_public_$1" ${@:2}
