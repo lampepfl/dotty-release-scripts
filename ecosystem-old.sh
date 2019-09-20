@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-#object Predef:
-  set -ex
-
+# Variables
   stable=$1
   live=$2  # Push changes to github if it is defined
 
@@ -26,7 +24,7 @@
     exit 1
   fi
 
-#package object util:
+# Utility
   function replace {
     local where="$1"
     local what="$2"
@@ -45,8 +43,8 @@
     fi
   }
 
-#class Project:
-  function project_call {
+#class Project
+  function call {
     local NAME=$1
     local SUPER_CALL=$2
     local FUNCTION="$NAME"_"$SELF"
@@ -57,53 +55,6 @@
     else
       $FUNCTION
     fi
-  }
-
-  function deploy { project_call "deploy" $1; }
-  function deploy_project {
-    git clone https://github.com/lampepfl/$SELF.git
-    cd $SELF
-  }
-
-  function update { project_call "update" $1; }
-  function update_project {
-    echo "Not implemented error: update"
-    exit 1
-  }
-
-  function test {
-    local FUNCTION="test_$SELF"
-    local SUPER_CALL="$1"
-    if $(isDefined $FUNCTION); then
-      if ! $FUNCTION; then
-        echo "Test failed for $SELF"
-        exit 1
-      fi
-    else
-      echo "No test available for $SELF"
-    fi
-  }
-
-  function publish { project_call "publish" $1; }
-  function publish_project {
-    git commit -am "Upgrade Dotty to $rc_version"
-    push
-  }
-
-  function cleanup { project_call "cleanup" $1; }
-  function cleanup_project {
-    cd ..
-    rm -rf $SELF
-  }
-
-  function process {
-    SELF=$1
-
-    deploy
-    update
-    test
-    publish
-    cleanup
   }
 
 #package object impl:
@@ -260,6 +211,10 @@
   packtest
   scastie
   scalac'
+
+https://github.com/lampepfl/dotty-staging.g8
+https://github.com/lampepfl/xml-interpolator
+Dotty
 
   function main {
     export -f process
