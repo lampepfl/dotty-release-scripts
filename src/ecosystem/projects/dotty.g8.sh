@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-function deploy_dotty.g8 {
-  git clone https://github.com/lampepfl/dotty.g8
-}
-
 function update_dotty.g8 {
   local what="val\s+dottyVersion\s*=\s*\".*\""
   local with_what="val dottyVersion = \"$rc_version\""
@@ -12,11 +8,6 @@ function update_dotty.g8 {
 }
 
 function test_dotty.g8 {
+  cd_projects
   sbt new file://./dotty.g8 --name=foo --description=bar && cd foo && sbt run
 }
-
-function publish_dotty.g8 {
-  cd_target
-  publish_default
-}
-

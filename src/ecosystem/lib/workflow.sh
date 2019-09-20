@@ -11,6 +11,7 @@
   }
 
   function call {
+    cd_target  # Always start from the target directory
     PURPOSE="$1"
     FUNCTION="${PURPOSE}_$TARGET"
     if $(notDefined $FUNCTION); then
