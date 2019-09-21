@@ -20,7 +20,7 @@
   live=$2  # Push changes to github if it is defined
 
   stable_patch=1
-  rc_patch=1
+  rc_patch=0
   next_patch=0
 
   rc="$(($stable+1))"
@@ -50,7 +50,7 @@
 
   function main {
     mk_projects
-    for project_path in "$PROJECT_SCRIPTS_DIR"/dotty.sh; do
+    for project_path in "$PROJECT_SCRIPTS_DIR"/*.sh; do
       project_filename=$(basename $project_path)
       project=${project_filename%.sh}  # Remove extension
       handle_project $project

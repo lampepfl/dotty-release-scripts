@@ -9,5 +9,5 @@ function update_dotty.g8 {
 
 function test_dotty.g8 {
   cd_projects
-  sbt new file://./dotty.g8 --name=foo --description=bar && cd foo && sbt run
+  sbt new file://./dotty.g8 --name=foo --description=bar && cd foo && sbt ";run ;test"
 }
