@@ -15,7 +15,7 @@ function init_vars {
   fi
 
   stable=$1
-  stable_patch=1
+  stable_patch=0
   rc_patch=0
   next_patch=0
 
