@@ -72,6 +72,7 @@ function _public_prepare {
 }
 
 function _public_release {
+  init_vars $1
   git push --atomic --tags origin master "$stable_branch" "$rc_branch"
 }
 
