@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 function deploy_dotty-example-project-mill {
-  git clone https://github.com/lampepfl/dotty-example-project
-  cd dotty-example-project
+  git clone https://github.com/lampepfl/dotty-example-project "$TARGET"
+  cd_target
   git checkout mill
 }
 

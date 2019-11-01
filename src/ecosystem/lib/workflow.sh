@@ -12,8 +12,10 @@
 
   function call {
     if [ -d "$PROJECTS_DIR/$TARGET" ]; then
+      echo "$PROJECTS_DIR/$TARGET exists, cd there"
       cd_target  # Start from the target directory if available, otherwise – projects directory
     else
+      echo "$PROJECTS_DIR/$TARGET not exists, cd $PROJECTS_DIR"
       cd_projects
     fi
     PURPOSE="$1"

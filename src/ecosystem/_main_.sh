@@ -17,7 +17,7 @@
 
 # Version-related variables
   stable=$1
-  live=$2  # Push changes to github if it is defined
+  live=$3  # Push changes to github if it is defined
 
   stable_patch=0
   rc_patch=0
@@ -33,7 +33,7 @@
   stable_branch="0.$stable.x"
   rc_branch="0.$rc.x"
 
-  TARGET_PROJECT="*"
+  TARGET_PROJECT="$2.sh"
 
 # Guards
   if [ -z "$(which gsed)" ]
