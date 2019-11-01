@@ -33,6 +33,8 @@
   stable_branch="0.$stable.x"
   rc_branch="0.$rc.x"
 
+  TARGET_PROJECT="*"
+
 # Guards
   if [ -z "$(which gsed)" ]
   then
@@ -50,7 +52,7 @@
 
   function main {
     mk_projects
-    for project_path in "$PROJECT_SCRIPTS_DIR"/*.sh; do
+    for project_path in "$PROJECT_SCRIPTS_DIR/$TARGET_PROJECT.sh"; do
       project_filename=$(basename $project_path)
       project=${project_filename%.sh}  # Remove extension
       handle_project $project
