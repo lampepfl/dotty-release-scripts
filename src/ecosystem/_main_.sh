@@ -52,7 +52,7 @@
 
   function main {
     mk_projects
-    for project_path in "$PROJECT_SCRIPTS_DIR/$TARGET_PROJECT.sh"; do
+    for project_path in "$PROJECT_SCRIPTS_DIR/$TARGET_PROJECT"; do
       project_filename=$(basename $project_path)
       project=${project_filename%.sh}  # Remove extension
       handle_project $project
