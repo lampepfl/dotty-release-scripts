@@ -19,7 +19,7 @@
   stable=$1
   live=$2  # Push changes to github if it is defined
 
-  stable_patch=1
+  stable_patch=0
   rc_patch=0
   next_patch=0
 
