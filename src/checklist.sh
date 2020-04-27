@@ -1,5 +1,5 @@
 # #!/usr/bin/env bash
-stable=$1
+stable=${1:?Stable release version must be provided as the first argument}
 stable_patch=0
 rc_patch=0
 next_patch=0
