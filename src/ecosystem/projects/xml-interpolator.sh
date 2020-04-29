@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+UPSTREAM_xml-interpolator="lampepfl/xml-interpolator"
+UPSTREAM_BRANCH_xml-interpolator="master"
+
 function update_xml-interpolator {
   local what="val\s+dottyVersion\s*=\s*\".*\""
   local with_what="val dottyVersion = \"$rc_version\""
