@@ -13,9 +13,5 @@
   }
 
   function push {
-    if [ ! -z $live ]; then
-      git push $@
-    else
-      echo "Dry run, not pushing to github"
-    fi
+    git push $@
   }

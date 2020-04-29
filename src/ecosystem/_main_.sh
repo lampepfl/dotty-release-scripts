@@ -16,8 +16,8 @@
   load lib/workflow
 
 # Version-related variables
-  stable=$1
-  live=$3  # Push changes to github if it is defined
+  stable=${1:?Specify stable version as a first parameter to the script}
+  target_project_name=${2:?Specify target project as a second parameter to the script}
 
   stable_patch=0
   rc_patch=0
@@ -33,7 +33,7 @@
   stable_branch="0.$stable.x"
   rc_branch="0.$rc.x"
 
-  TARGET_PROJECT="$2.sh"
+  TARGET_PROJECT="${target_project_name}.sh"
 
 # Guards
   if [ -z "$(which gsed)" ]
@@ -52,11 +52,10 @@
 
   function main {
     mk_projects
-    for project_path in "$PROJECT_SCRIPTS_DIR/$TARGET_PROJECT"; do
-      project_filename=$(basename $project_path)
-      project=${project_filename%.sh}  # Remove extension
-      handle_project $project
-    done
+    project_path="$PROJECT_SCRIPTS_DIR/$TARGET_PROJECT"
+    project_filename=$(basename $project_path)
+    project=${project_filename%.sh}  # Remove extension
+    handle_project $project
     rm_projects
   }
 
