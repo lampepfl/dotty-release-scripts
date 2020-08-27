@@ -22,7 +22,7 @@
   stable_patch=0
   rc_patch=0
   next_patch=0
-  rc_version=2
+  rc_version=1
 
   rc="$(($stable+1))"
   next="$(($rc+1))"
