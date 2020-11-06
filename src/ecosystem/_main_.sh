@@ -17,7 +17,7 @@
   load lib/workflow
 
 # Version-related variables
-  rc_version=`cat $SCRIPT_DIR/release_version`
+  release_version=`cat $SCRIPT_DIR/release_version`
   target_project_name=${1:?Specify target project as a second parameter to the script}
 
   TARGET_PROJECT="${target_project_name}.sh"

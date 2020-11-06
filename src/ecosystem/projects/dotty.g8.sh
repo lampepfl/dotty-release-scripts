@@ -2,7 +2,7 @@
 
 function update_dotty.g8 {
   local what="val\s+dottyVersion\s*=\s*\".*\""
-  local with_what="val dottyVersion = \"$rc_version\""
+  local with_what="val dottyVersion = \"$release_version\""
 
   replace "src/main/g8/build.sbt" "$what" "$with_what"
 }

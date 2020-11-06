@@ -41,14 +41,14 @@ function update_default {
 
 function publish_default {
   if [ ! -z $UPSTREAM ] && [ ! -z UPSTREAM_BRANCH ]; then
-    ORIGIN_BRANCH="dotty-release-$rc_version"
+    ORIGIN_BRANCH="dotty-release-$release_version"
     git remote add staging https://github.com/dotty-staging/$TARGET.git
     git checkout -b $ORIGIN_BRANCH
-    git commit -am "Upgrade Dotty to $rc_version"
+    git commit -am "Upgrade Dotty to $release_version"
     push -u staging
     open "https://github.com/$UPSTREAM/compare/$UPSTREAM_BRANCH...dotty-staging:$ORIGIN_BRANCH"
   else
-    git commit -am "Upgrade Dotty to $rc_version"
+    git commit -am "Upgrade Dotty to $release_version"
     push
   fi
 }

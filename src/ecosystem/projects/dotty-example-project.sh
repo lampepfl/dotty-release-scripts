@@ -2,7 +2,7 @@
 
 function update_dotty-example-project {
   local what="scalaVersion\s*:=\s*\".*\""
-  local with_what="scalaVersion := \"$rc_version\""
+  local with_what="scalaVersion := \"$release_version\""
 
   replace "README.md" "$what" "$with_what"
   replace "build.sbt" "$what" "$with_what"

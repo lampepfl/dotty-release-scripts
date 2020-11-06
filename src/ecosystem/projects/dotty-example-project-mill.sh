@@ -8,7 +8,7 @@ function deploy_dotty-example-project-mill {
 
 function update_dotty-example-project-mill {
   local what="def\s+scalaVersion\s*=\s*\".*\""
-  local with_what="def scalaVersion = \"$rc_version\""
+  local with_what="def scalaVersion = \"$release_version\""
 
   replace "build.sc" "$what" "$with_what"
   replace "README.md" "$what" "$with_what"
