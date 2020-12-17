@@ -15,7 +15,6 @@ function process {
 function init_vars_default {
   UPSTREAM_NAME="UPSTREAM_$TARGET"
   UPSTREAM_BRANCH_NAME="UPSTREAM_BRANCH_$TARGET"
-
   # https://stackoverflow.com/a/1921337
   UPSTREAM=${!UPSTREAM_NAME}
   UPSTREAM_BRANCH=${!UPSTREAM_BRANCH_NAME}
@@ -27,7 +26,7 @@ function deploy_default {
   else
     TARGET_URL="https://github.com/lampepfl/$TARGET.git"
   fi
-  git clone "$TARGET_URL"
+  git clone "$TARGET_URL" "$TARGET"
 }
 
 function test_default {
@@ -40,7 +39,7 @@ function update_default {
 }
 
 function publish_default {
-  if [ ! -z $UPSTREAM ] && [ ! -z UPSTREAM_BRANCH ]; then
+  if [ ! -z $UPSTREAM ] && [ ! -z $UPSTREAM_BRANCH ]; then
     ORIGIN_BRANCH="dotty-release-$release_version"
     git remote add staging https://github.com/dotty-staging/$TARGET.git
     git checkout -b $ORIGIN_BRANCH

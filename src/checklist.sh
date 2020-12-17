@@ -48,4 +48,4 @@ LIST='- [ ] Finalize release
 [Instructions on how to release](https://dotty.epfl.ch/docs/contributing/procedures/release.html)'
 
 echo "$LIST" |\
-  sed "s/<release_version>/$release_version/g" |\
+  sed "s/<release_version>/$release_version/g"
