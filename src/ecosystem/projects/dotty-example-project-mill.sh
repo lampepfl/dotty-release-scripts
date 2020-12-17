@@ -15,5 +15,5 @@ function update_dotty-example-project-mill {
 }
 
 function test_dotty-example-project-mill {
-  mill root.run
+  ./mill root.run
 }
