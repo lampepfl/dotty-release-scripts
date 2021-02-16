@@ -24,7 +24,7 @@ LIST='- [ ] Finalize release
     - [ ] PR merged
     - [ ] https://scastie.scala-lang.org/ -> Build Settings -> Dotty mentions `<rc-version>`
   - [ ] Dotty reference compiler [![Dotty CI](https://github.com/lampepfl/dotty/workflows/Dotty%20CI/badge.svg?branch=master)](https://github.com/lampepfl/dotty/actions?query=branch%3Amaster)
-    - [ ] PR submitted (#10828)
+    - [ ] PR submitted
     - [ ] PR merged
   - [ ] Scalac [![Build Status](https://travis-ci.org/scala/scala.svg?branch=2.13.x)](https://travis-ci.org/scala/scala)
     - [ ] PR submitted
