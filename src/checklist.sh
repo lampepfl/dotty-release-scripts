@@ -29,7 +29,7 @@ LIST='- [ ] Finalize release
   - [ ] Scalac [![Build Status](https://travis-ci.org/scala/scala.svg?branch=2.13.x)](https://travis-ci.org/scala/scala)
     - [ ] PR submitted
     - [ ] PR merged
-  - Update the dotty-repl Coursier [app definition](https://github.com/coursier/apps/blob/master/apps/resources/dotty-repl.json)
+  - [ ] Update the dotty-repl Coursier [app definition](https://github.com/coursier/apps/blob/master/apps/resources/dotty-repl.json)
 - [ ] Announce the release
   - [ ] Publish releases for the RC and stable versions on GitHub Releases
   - [ ] Publish Blog Post on dotty.epfl.ch
