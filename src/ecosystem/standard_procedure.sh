@@ -24,7 +24,7 @@ function deploy_default {
   if [ ! -z $UPSTREAM ]; then
     TARGET_URL="https://github.com/$UPSTREAM.git"
   else
-    TARGET_URL="https://github.com/lampepfl/$TARGET.git"
+    TARGET_URL="https://github.com/scala/$TARGET.git"
   fi
   git clone "$TARGET_URL" "$TARGET"
 }
