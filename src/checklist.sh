@@ -1,5 +1,6 @@
 # #!/usr/bin/env bash
-release_version=${1:?The to-be-released version must be provided as the first argument}
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+release_version=`cat $SCRIPT_DIR/release_version`
 
 LIST='- [ ] Finalize release
   - [ ] Look at the milestone of the version being released. Move all the open issues from it to the next milestone.
