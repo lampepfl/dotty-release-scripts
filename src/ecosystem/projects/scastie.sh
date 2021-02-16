@@ -5,6 +5,6 @@ UPSTREAM_BRANCH_scastie="master"
 
 function update_scastie {
   replace "project/SbtShared.scala" \
-    "val\s+latestDotty\s*=\s*\".*\"" \
-    "val latestDotty = \"$release_version\""
+    "val\s+latest3\s*=\s*\".*\"" \
+    "val latest3  = \"$release_version\""
 }

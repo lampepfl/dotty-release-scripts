@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 function update_dotty.g8 {
-  local what="val\s+dottyVersion\s*=\s*\".*\""
-  local with_what="val dottyVersion = \"$release_version\""
+  local what="val\s+scala3Version\s*=\s*\".*\""
+  local with_what="val scala3Version = \"$release_version\""
 
   replace "src/main/g8/build.sbt" "$what" "$with_what"
 }
