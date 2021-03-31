@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+UPSTREAM_packtest="lampepfl/packtest"
+UPSTREAM_BRANCH_packtest="master"
+
 function update_packtest {
   replace "artifacts" \
     "zip=https:\/\/github.com\/lampepfl\/dotty\/releases\/download\/$RC_PATTERN\/scala3-$RC_PATTERN.zip" \

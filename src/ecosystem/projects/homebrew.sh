@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-function update_homebrew-brew {
+UPSTREAM_homebrew="lampepfl/homebrew-brew"
+UPSTREAM_BRANCH_homebrew="master"
+COMMIT_DIRECTLY_homebrew="true"
+
+function update_homebrew {
   local hash=$(curl -L -s https://github.com/lampepfl/dotty/releases/download/$release_version/sha256sum.txt | grep ".tar.gz" | awk '{ print $1 }')
 
   replace "dotty.rb" \

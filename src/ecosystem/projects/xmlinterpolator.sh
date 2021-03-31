@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-UPSTREAM_xml-interpolator="lampepfl/xml-interpolator"
-UPSTREAM_BRANCH_xml-interpolator="master"
+UPSTREAM_xmlinterpolator="lampepfl/xml-interpolator"
+UPSTREAM_BRANCH_xmlinterpolator="master"
 
-function update_xml-interpolator {
+function update_xmlinterpolator {
   local what="val\s+dottyVersion\s*=\s*\".*\""
   local with_what="val dottyVersion = \"$release_version\""
 
   replace "build.sbt" "$what" "$with_what"
 }
 
-function test_xml-interpolator {
+function test_xmlinterpolator {
   sbt test
 }

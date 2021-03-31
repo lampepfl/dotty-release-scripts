@@ -15,9 +15,11 @@ function process {
 function init_vars_default {
   UPSTREAM_NAME="UPSTREAM_$TARGET"
   UPSTREAM_BRANCH_NAME="UPSTREAM_BRANCH_$TARGET"
+  COMMIT_DIRECTLY_NAME="COMMIT_DIRECTLY_$TARGET"
   # https://stackoverflow.com/a/1921337
   UPSTREAM=${!UPSTREAM_NAME}
   UPSTREAM_BRANCH=${!UPSTREAM_BRANCH_NAME}
+  COMMIT_DIRECTLY=${!COMMIT_DIRECTLY_NAME}
 }
 
 function deploy_default {
@@ -39,7 +41,7 @@ function update_default {
 }
 
 function publish_default {
-  if [ ! -z $UPSTREAM ] && [ ! -z $UPSTREAM_BRANCH ]; then
+  if [ ! -z $UPSTREAM ] && [ ! -z $UPSTREAM_BRANCH ] && [ -z $COMMIT_DIRECTLY ]; then
     ORIGIN_BRANCH="dotty-release-$release_version"
     git remote add staging https://github.com/dotty-staging/$TARGET.git
     git checkout -b $ORIGIN_BRANCH
