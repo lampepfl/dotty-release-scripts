@@ -1,10 +1,11 @@
 import tempfile, shutil, subprocess, os, re
 
 class Project:
-  def __init__(self, upstream, test_spec, update_spec):
+  def __init__(self, upstream, test_spec, update_spec, commit_directly):
     self.upstream = upstream
     self.test_spec = test_spec
     self.update_spec = update_spec
+    self.commit_directly = commit_directly
 
   def __enter__(self):
     self.root_dir = tempfile.mkdtemp()
@@ -43,3 +44,11 @@ class Project:
       subprocess.run(self.test_spec.split(), cwd=self.project_dir)
     else:
       self.test_spec(self)
+
+  def show_diff(self):
+    subprocess.run(['git', 'diff'], cwd=self.project_dir)
+
+  def publish(self, release_version):
+    if self.commit_directly:
+      subprocess.run(['git', 'commit', '-am', 'Upgrade Dotty to {0}'.format(release_version)], cwd=self.project_dir)
+      subprocess.run(['git', 'push'], cwd=self.project_dir)

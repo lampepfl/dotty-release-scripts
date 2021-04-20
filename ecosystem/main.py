@@ -10,7 +10,8 @@ Scala3ExampleProject = Project(
   update_spec = [
     ['README.md', 'scalaVersion\\s*:=\\s*".*"', 'scalaVersion := "{release_version}"'.format(release_version = release_version)],
     ['build.sbt', 'scalaVersion\\s*:=\\s*".*"', 'scalaVersion := "{release_version}"'.format(release_version = release_version)],
-  ]
+  ],
+  commit_directly = True
 )
 
 with Scala3ExampleProject as dummy:
@@ -18,6 +19,8 @@ with Scala3ExampleProject as dummy:
     choices = {
       'Update': lambda: dummy.update(),
       'Test': lambda: dummy.test(),
+      'Git Status': lambda: dummy.show_diff(),
+      'Publish': lambda: dummy.publish(release_version),
       'Show Root Directory': lambda: dummy.print_root_dir(),
       'Open in Sublime': lambda: dummy.open_sublime_at_root(),
       'Exit': ''
