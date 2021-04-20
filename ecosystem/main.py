@@ -1,36 +1,34 @@
 #!/usr/bin/env python3
 import inquirer, os
-
-# import pkgutil, importlib
-# names = [name for _, name, _ in pkgutil.iter_modules(['projects'])]
-# answers = inquirer.prompt([inquirer.List(
-#     'target',
-#     message='What project should we work on?',
-#     choices = names
-#   )
-# ])
-# mod = importlib.import_module('projects.{target}'.format(**answers))
-
 from project import Project
+
+release_version = input('Which version are we releasing? > ')
 
 Scala3ExampleProject = Project(
   upstream = 'https://github.com/scala/scala3-example-project',
-  test_spec = 'sbt run'
+  test_spec = 'sbt run',
+  update_spec = [
+    ['README.md', 'scalaVersion\\s*:=\\s*".*"', 'scalaVersion := "{release_version}"'.format(release_version = release_version)],
+    ['build.sbt', 'scalaVersion\\s*:=\\s*".*"', 'scalaVersion := "{release_version}"'.format(release_version = release_version)],
+  ]
 )
 
-choices = ['Test', 'Show Root Directory', 'Leave']
 with Scala3ExampleProject as dummy:
   while(True):
+    choices = {
+      'Update': lambda: dummy.update(),
+      'Test': lambda: dummy.test(),
+      'Show Root Directory': lambda: dummy.print_root_dir(),
+      'Open in Sublime': lambda: dummy.open_sublime_at_root(),
+      'Exit': ''
+    }
+
     option = inquirer.prompt([inquirer.List(
       'target',
       message='What do we do?',
-      choices=choices
+      choices=choices.keys()
     )])['target']
-    opt_id = choices.index(option)
-
-    if opt_id is 0:
-      dummy.test()
-    elif opt_id is 1:
-      print(dummy.root_dir)
-    elif opt_id is 2:
+    if option is 'Exit':
       break
+    else:
+      choices[option]()
