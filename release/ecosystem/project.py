@@ -1,4 +1,4 @@
-import tempfile, shutil, subprocess, os, re, json
+import tempfile, shutil, subprocess, os, re, json, textwrap
 
 class Project:
   def __init__(self, name, d):
@@ -46,5 +46,8 @@ class Project:
 
   def publish(self, release_version):
     if self.commit_directly:
-      subprocess.run(['git', 'commit', '-am', 'Upgrade Dotty to {0}'.format(release_version)], cwd=self.project_dir)
-      subprocess.run(['git', 'push'], cwd=self.project_dir)
+      command = textwrap.dedent('''
+        git commit -am {release_version}
+        git push
+      '''.format(release_version = release_version))
+      subprocess.run(command, cwd=self.project_dir, shell=True)

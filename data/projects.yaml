@@ -25,3 +25,18 @@ scala3-cross.g8:
       pattern: scala3Version\s*=\s*".*"
       replacement: scala3Version = "{release_version}"
   commit_directly: True
+
+scala3-staging.g8:
+  upstream: https://github.com/scala/scala3-staging.g8
+  test_spec:
+    run_from_root: True
+    command: >
+      rm -rf foo ;
+      sbt new file://./scala3-staging.g8 --name=foo --description=bar &&
+      cd foo &&
+      sbt ";run; test"
+  update_spec:
+    - file: src/main/g8/build.sbt
+      pattern: scala3Version\s*=\s*".*"
+      replacement: scala3Version = "{release_version}"
+  commit_directly: True
