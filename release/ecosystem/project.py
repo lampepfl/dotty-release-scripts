@@ -1,29 +1,44 @@
 import tempfile, shutil, subprocess, os, re, json, textwrap
 
 class Project:
-  def __init__(self, name, d):
+  def __init__(self, name, release_version, d):
     self.name = name
+    self.release_version = release_version
     self.__dict__.update(d)
+
+    if not hasattr(self, 'commit_directly'):
+      self.commit_directly = False
+    if not hasattr(self, 'upstream_branch'):
+      self.upstream_branch = 'master'
+    if not hasattr(self, 'staging_branch'):
+      self.staging_branch = self.template('scala3-release-{release_version}')
 
   def __enter__(self):
     self.root_dir = tempfile.mkdtemp()
     self.project_dir = os.path.join(self.root_dir, self.name)
-    subprocess.run(
-      ['git', 'clone', self.upstream, self.name],
-      cwd=self.root_dir)
+
+    subprocess.run(self.template('''
+      git clone {upstream} {name}
+      git checkout {upstream_branch}
+    '''), cwd=self.root_dir, shell=True)
+
+    if not self.commit_directly:
+      subprocess.run(self.template('''
+        git remote add staging {staging}
+      '''), cwd=self.project_dir, shell=True)
+
     return self
 
   def __exit__(self, exc_type, exc_val, exc_tb):
     shutil.rmtree(self.root_dir)
 
-  def print_root_dir(self):
-    print(self.root_dir)
+  def template(self, cmd):
+    return textwrap.dedent(cmd.format(**self.__dict__))
 
+
+  ### User-facing Menu Methods ###
   def open_sublime_at_root(self):
-    subprocess.run(['subl', self.root_dir])
-
-  def debug(self):
-    print(json.dumps(self.__dict__, indent=2, sort_keys=True))
+    subprocess.run(self.template('subl {root_dir}'), shell=True)
 
   def update(self):
     for spec in self.update_spec:
@@ -41,13 +56,37 @@ class Project:
       target_dir = self.project_dir
     subprocess.run(self.test_spec['command'], cwd=target_dir, shell=True)
 
-  def show_diff(self):
-    subprocess.run(['git', 'diff'], cwd=self.project_dir)
+  def debug(self):
+    print(json.dumps(self.__dict__, indent=2, sort_keys=True))
 
-  def publish(self, release_version):
+  def show_diff(self):
+    subprocess.run('git diff', cwd=self.project_dir, shell=True)
+
+  def publish(self):
     if self.commit_directly:
-      command = textwrap.dedent('''
+      command = self.command('''
         git commit -am {release_version}
         git push
-      '''.format(release_version = release_version))
+      ''')
       subprocess.run(command, cwd=self.project_dir, shell=True)
+    else:
+      command = self.template('''
+        git checkout -b {staging_branch}
+        git commit -am "Upgrade Dotty to {release_version}"
+        git push -u staging
+        open "{upstream}/compare/{upstream_branch}...dotty-staging:{staging_branch}"
+      ''')
+      subprocess.run(command, cwd=self.project_dir, shell=True)
+
+  def open_staging(self):
+    subprocess.run(self.template('open {staging}'), shell=True)
+
+  def open_upstream(self):
+    subprocess.run(self.template('open {upstream}'), shell=True)
+
+  def delete_staging_branch(self):
+    subprocess.run(self.template('''
+      git checkout {upstream_branch}
+      git branch -D {staging_branch}
+      git push {staging} --delete {staging_branch}
+    '''), cwd=self.project_dir, shell=True)
