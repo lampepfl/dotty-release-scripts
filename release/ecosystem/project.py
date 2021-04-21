@@ -1,14 +1,15 @@
-import tempfile, shutil, subprocess, os, re
+import tempfile, shutil, subprocess, os, re, json
 
 class Project:
-  def __init__(self, d):
+  def __init__(self, name, d):
+    self.name = name
     self.__dict__.update(d)
 
   def __enter__(self):
     self.root_dir = tempfile.mkdtemp()
-    self.project_dir = os.path.join(self.root_dir, 'cloned_project')
+    self.project_dir = os.path.join(self.root_dir, self.name)
     subprocess.run(
-      ['git', 'clone', self.upstream, 'cloned_project'],
+      ['git', 'clone', self.upstream, self.name],
       cwd=self.root_dir)
     return self
 
@@ -21,10 +22,11 @@ class Project:
   def open_sublime_at_root(self):
     subprocess.run(['subl', self.root_dir])
 
+  def debug(self):
+    print(json.dumps(self.__dict__, indent=2, sort_keys=True))
+
   def update(self):
     for spec in self.update_spec:
-      print(spec)
-
       full_path = os.path.join(self.project_dir, spec['file'])
       with open(full_path, 'r') as f:
         src = f.read()
@@ -33,7 +35,11 @@ class Project:
         f.write(res)
 
   def test(self):
-    subprocess.run(self.test_spec.split(), cwd=self.project_dir)
+    if self.test_spec.get('run_from_root'):
+      target_dir = self.root_dir
+    else:
+      target_dir = self.project_dir
+    subprocess.run(self.test_spec['command'], cwd=target_dir, shell=True)
 
   def show_diff(self):
     subprocess.run(['git', 'diff'], cwd=self.project_dir)
