@@ -81,3 +81,25 @@ scastie:
     - file: project/SbtShared.scala
       pattern: val\s+latest3\s*=\s*"{scala3_version_pattern}"
       replacement: val latest3   = "{release_version}"
+
+coursier-apps:
+  upstream: https://github.com/coursier/apps
+  staging: https://github.com/dotty-staging/coursierapps
+  test_spec:
+    command: echo 'No test available for Coursier'
+  update_spec:
+    - file: apps/resources/dotty-repl.json
+      pattern: org.scala-lang:scala3-compiler_{scala3_version_pattern}\:latest.release
+      replacement: org.scala-lang:scala3-compiler_{release_version}:latest.release
+    - file: apps/resources/scala3-compiler.json
+      pattern: org.scala-lang:scala3-compiler_{scala3_version_pattern}\:{scala3_version_pattern}
+      replacement: org.scala-lang:scala3-compiler_{release_version}:{release_version}
+    - file: apps/resources/scala3-decompiler.json
+      pattern: org.scala-lang:scala3-compiler_{scala3_version_pattern}\:{scala3_version_pattern}
+      replacement: org.scala-lang:scala3-compiler_{release_version}:{release_version}
+    - file: apps/resources/scala3-doc.json
+      pattern: org.scala-lang:scala3-doc_{scala3_version_pattern}\:{scala3_version_pattern}
+      replacement: org.scala-lang:scala3-doc_{release_version}:{release_version}
+    - file: apps/resources/scala3-repl.json
+      pattern: org.scala-lang:scala3-compiler_{scala3_version_pattern}\:{scala3_version_pattern}
+      replacement: org.scala-lang:scala3-compiler_{release_version}:{release_version}
