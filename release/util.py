@@ -1,4 +1,4 @@
-import inquirer
+import inquirer, yaml
 
 def choice_loop(choices, prompt, task):
   choices_refined = choices.copy()
@@ -14,3 +14,10 @@ def choice_loop(choices, prompt, task):
       break
     else:
       task(choices_refined[option])
+
+def load_data(name, release_version):
+  with open('data/_variables.yaml', 'r') as f:
+    template_variables = yaml.safe_load(f)
+  with open('data/{0}'.format(name), 'r') as f:
+    contents = f.read()
+  return contents.format(release_version=release_version, **template_variables)

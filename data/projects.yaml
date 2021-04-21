@@ -40,3 +40,24 @@ scala3-staging.g8:
       pattern: scala3Version\s*=\s*".*"
       replacement: scala3Version = "{release_version}"
   commit_directly: True
+
+scala3-tasty-inspector.g8:
+  upstream: https://github.com/scala/scala3-tasty-inspector.g8
+  test_spec:
+    run_from_root: True
+    command: >
+      rm -rf foo ;
+      sbt new file://./scala3-tasty-inspector.g8 --name=foo --description=bar &&
+      cd foo &&
+      sbt ";lib/test ;inspector/run ;inspector/test"
+  update_spec:
+    - file: src/main/g8/build.sbt
+      pattern: scala3Version\s*=\s*".*"
+      replacement: scala3Version = "{release_version}"
+    - file: src/main/g8/inspector/src/main/scala/inspector/Main.scala
+      pattern: lib/target/scala-{scala3_version_pattern}
+      replacement: lib/target/scala-{release_version}
+    - file: src/main/g8/inspector/src/test/scala/inspector/Test.scala
+      pattern: lib/target/scala-{scala3_version_pattern}
+      replacement: lib/target/scala-{release_version}
+  commit_directly: True
