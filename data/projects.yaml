@@ -1,0 +1,11 @@
+scala3-example-project:
+  upstream: https://github.com/scala/scala3-example-project
+  test_spec: sbt run
+  update_spec:
+    - file: README.md
+      pattern: scalaVersion\s*:=\s*".*"
+      replacement: scalaVersion := "{release_version}"
+    - file: build.sbt
+      pattern: scalaVersion\s*:=\s*".*"
+      replacement: scalaVersion := "{release_version}"
+  commit_directly: True

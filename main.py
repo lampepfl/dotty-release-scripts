@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-import sys
-sys.path.append('release/ecosystem')
-
 from release import changelog, checklist, util
 from release.ecosystem import ecosystem
 

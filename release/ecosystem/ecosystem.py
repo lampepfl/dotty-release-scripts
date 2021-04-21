@@ -1,5 +1,13 @@
+import yaml
 from release.util import choice_loop
-from ecosystem_projects import ecosystem_projects
+from release.ecosystem.project import Project
+
+def ecosystem_projects(release_version):
+  with open('data/projects.yaml', 'r') as f:
+    raw_yaml = f.read().format(release_version = release_version)
+    projects = yaml.safe_load(raw_yaml)
+
+  return { name: Project(spec) for name, spec in projects.items() }
 
 def project_menu(project):
   with project as p:

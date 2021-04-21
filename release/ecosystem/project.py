@@ -1,11 +1,8 @@
 import tempfile, shutil, subprocess, os, re
 
 class Project:
-  def __init__(self, upstream, test_spec, update_spec, commit_directly):
-    self.upstream = upstream
-    self.test_spec = test_spec
-    self.update_spec = update_spec
-    self.commit_directly = commit_directly
+  def __init__(self, d):
+    self.__dict__.update(d)
 
   def __enter__(self):
     self.root_dir = tempfile.mkdtemp()
@@ -25,25 +22,18 @@ class Project:
     subprocess.run(['subl', self.root_dir])
 
   def update(self):
-    if isinstance(self.update_spec, list):
-      for where, what, with_what in self.update_spec:
-        full_path = os.path.join(self.project_dir, where)
-        src = ''
-        with open(full_path, 'r') as f:
-          src = f.read()
-        res = re.sub(what, with_what, src, flags=re.MULTILINE)
-        with open(full_path, 'w') as f:
-          f.write(res)
-    else:
-      self.update_spec(self)
+    for spec in self.update_spec:
+      print(spec)
+
+      full_path = os.path.join(self.project_dir, spec['file'])
+      with open(full_path, 'r') as f:
+        src = f.read()
+      res = re.sub(spec['pattern'], spec['replacement'], src, flags=re.MULTILINE)
+      with open(full_path, 'w') as f:
+        f.write(res)
 
   def test(self):
-    if isinstance(self.test_spec, list):
-      subprocess.run(self.test_spec, cwd=self.project_dir)
-    elif isinstance(self.test_spec, str):
-      subprocess.run(self.test_spec.split(), cwd=self.project_dir)
-    else:
-      self.test_spec(self)
+    subprocess.run(self.test_spec.split(), cwd=self.project_dir)
 
   def show_diff(self):
     subprocess.run(['git', 'diff'], cwd=self.project_dir)
