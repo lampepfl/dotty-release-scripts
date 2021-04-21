@@ -103,3 +103,14 @@ coursier-apps:
     - file: apps/resources/scala3-repl.json
       pattern: org.scala-lang:scala3-compiler_{scala3_version_pattern}\:{scala3_version_pattern}
       replacement: org.scala-lang:scala3-compiler_{release_version}:{release_version}
+
+scala-2:
+  upstream: https://github.com/scala/scala
+  upstream_branch: 2.13.x
+  staging: https://github.com/dotty-staging/scala
+  test_spec:
+    command: echo 'No test available for scala/scala'
+  update_spec:
+    - file: project/DottySupport.scala
+      pattern: val\s+dottyVersion\s*=\s*"{scala3_version_pattern}"
+      replacement: val dottyVersion = "{release_version}"
