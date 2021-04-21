@@ -71,3 +71,13 @@ xml-interpolator:
     - file: build.sbt
       pattern: dottyVersion\s*=\s*"{scala3_version_pattern}"
       replacement: dottyVersion = "{release_version}"
+
+scastie:
+  upstream: https://github.com/scalacenter/scastie
+  staging: https://github.com/dotty-staging/scastie
+  test_spec:
+    command: echo 'No test available for Scastie'
+  update_spec:
+    - file: project/SbtShared.scala
+      pattern: val\s+latest3\s*=\s*"{scala3_version_pattern}"
+      replacement: val latest3   = "{release_version}"
