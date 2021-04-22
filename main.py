@@ -7,7 +7,7 @@ util.choice_loop(
   {
     'Produce Checklist': lambda: print(util.load_data('checklist.md', release_version)),
     'Refine Changelog': lambda: changelog.refine(),
-    'Release Ecosystem': lambda: ecosystem.select_project(release_version)
+    'Release Ecosystem': lambda: ecosystem.select_ecosystem(release_version)
   },
   'What do you want to do?',
   lambda f: f()
