@@ -70,7 +70,7 @@ class Project:
 
   def publish(self):
     if self.commit_directly:
-      command = self.command('''
+      command = self.template('''
         git commit -am "Upgrade Dotty to {release_version}"
         git push
       ''')
