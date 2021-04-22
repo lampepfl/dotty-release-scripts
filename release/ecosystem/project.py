@@ -1,4 +1,4 @@
-import tempfile, shutil, subprocess, os, re, json, textwrap
+import tempfile, shutil, subprocess, os, re, json, textwrap, importlib
 from release import util
 
 class Project:
@@ -15,7 +15,8 @@ class Project:
       self.staging_branch = self.template('scala3-release-{release_version}')
 
     if hasattr(self, 'project_class'):
-      self.__class__ = util.import_class(self.project_class['module'], self.project_class['class'])
+      module = importlib.import_module(self.project_class['module'])
+      self.__class__ = getattr(module, self.project_class['class'])
 
   def __enter__(self):
     self.root_dir = tempfile.mkdtemp()

@@ -17,7 +17,7 @@ def refine():
   raw_prs = ''
   while (nl_count < 3):
     line = sys.stdin.readline()
-    if line is '\n':
+    if line == '\n':
       nl_count += 1
     else:
       nl_count = 0
