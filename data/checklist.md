@@ -7,7 +7,7 @@
   - [ ] On `master`, set `baseVersion` to the next version to be released
 - [ ] Send PRs with updated `scalaVersion` (and, if applicable, the `sbt-dotty` version) to the Dotty ecosystem projects
   - [ ] https://github.com/scala/scala3-example-project [![Build Status](https://travis-ci.org/scala/scala3-example-project.svg?branch=master)](https://travis-ci.org/scala/scala3-example-project)
-  - [ ] https://github.com/scala/scala3-example-project/tree/mill
+  - [ ] https://github.com/scala/scala3-mill-example-project
   - [ ] https://github.com/scala/scala3.g8 [![Build Status](https://travis-ci.org/scala/scala3.g8.svg?branch=master)](https://travis-ci.org/scala/scala3.g8/)
   - [ ] https://github.com/scala/scala3-cross.g8 [![Build Status](https://travis-ci.org/scala/scala3-cross.g8.svg?branch=master)](https://travis-ci.org/scala/scala3-cross.g8/)
   - [ ] https://github.com/lampepfl/scala3-staging.g8 [![Build Status](https://travis-ci.org/scala/scala3-staging.g8.svg?branch=master)](https://travis-ci.org/lampepfl/scala3-staging.g8)

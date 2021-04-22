@@ -9,8 +9,22 @@ scala3-example-project:
       pattern: scalaVersion\s*:=\s*"{scala3_version_pattern}"
       replacement: scalaVersion := "{release_version}"
     - file: build.sbt
-      pattern: scalaVersion\s*:=\s*".*"
+      pattern: scalaVersion\s*:=\s*"{scala3_version_pattern}"
       replacement: scalaVersion := "{release_version}"
+
+scala3-mill-example-project:
+  upstream: https://github.com/scala/scala3-mill-example-project
+  upstream_branch: main
+  staging: https://github.com/dotty-staging/scala3-mill-example-project
+  test_spec:
+    command: ./mill root.run
+  update_spec:
+    - file: README.md
+      pattern: scalaVersion\s*=\s*"{scala3_version_pattern}"
+      replacement: scalaVersion = "{release_version}"
+    - file: build.sc
+      pattern: scalaVersion\s*=\s*"{scala3_version_pattern}"
+      replacement: scalaVersion = "{release_version}"
 
 scala3-cross.g8:
   upstream: https://github.com/scala/scala3-cross.g8
