@@ -1,0 +1,79 @@
+utest:
+  upstream: https://github.com/com-lihaoyi/utest
+  staging: https://github.com/dotty-staging/utest
+  test_spec:
+    command: time ./mill -i utest.jvm[{release_version}].test
+  update_spec:
+    - file: build.sc
+      pattern: ':: "{scala3_version_pattern}" :: dottyVersions'
+      replacement: ':: "{release_version}" :: dottyVersions'
+
+sourcecode:
+  upstream: https://github.com/com-lihaoyi/sourcecode
+  staging: https://github.com/dotty-staging/sourcecode
+  test_spec:
+    command: time ./mill -i sourcecode.jvm[{release_version}].test
+  update_spec:
+    - file: build.sc
+      pattern: ':: "{scala3_version_pattern}" :: dottyVersions'
+      replacement: ':: "{release_version}" :: dottyVersions'
+
+geny:
+  upstream: https://github.com/com-lihaoyi/geny
+  staging: https://github.com/dotty-staging/geny
+  test_spec:
+    command: time ./mill -i geny.jvm[{release_version}].test
+  update_spec:
+    - file: build.sc
+      pattern: val\s*scala3\s*=\s*"{scala3_version_pattern}"
+      replacement: val scala3 = "{release_version}"
+
+fansi:
+  upstream: https://github.com/com-lihaoyi/fansi
+  staging: https://github.com/dotty-staging/fansi
+  test_spec:
+    command: time ./mill -i fansi.jvm[{release_version}].test
+  update_spec:
+    - file: build.sc
+      pattern: ':: "{scala3_version_pattern}" :: dottyVersions'
+      replacement: ':: "{release_version}" :: dottyVersions'
+
+upickle:
+  upstream: https://github.com/com-lihaoyi/upickle
+  staging: https://github.com/dotty-staging/upickle
+  test_spec:
+    command: time ./mill -i _.jvm[{release_version}].test
+  update_spec:
+    - file: build.sc
+      pattern: val scala3    = "{scala3_version_pattern}"
+      replacement: val scala3    = "{release_version}"
+
+os-lib:
+  upstream: https://github.com/com-lihaoyi/os-lib
+  staging: https://github.com/dotty-staging/os-lib
+  test_spec:
+    command: time ./mill -i os.jvm[{release_version}].test
+  update_spec:
+    - file: build.sc
+      pattern: ':: "{scala3_version_pattern}" :: dottyVersions'
+      replacement: ':: "{release_version}" :: dottyVersions'
+
+pprint:
+  upstream: https://github.com/com-lihaoyi/PPrint
+  staging: https://github.com/dotty-staging/pprint
+  test_spec:
+    command: time ./mill -i pprint.jvm[{release_version}].test
+  update_spec:
+    - file: build.sc
+      pattern: ':: "{scala3_version_pattern}" :: dottyVersions'
+      replacement: ':: "{release_version}" :: dottyVersions'
+
+requests:
+  upstream: https://github.com/com-lihaoyi/requests-scala
+  staging: https://github.com/dotty-staging/requests-scala
+  test_spec:
+    command: time ./mill -i requests[{release_version}].test
+  update_spec:
+    - file: build.sc
+      pattern: '"{scala3_version_pattern}") ++ dottyVersion'
+      replacement: '"{release_version}") ++ dottyVersion'
