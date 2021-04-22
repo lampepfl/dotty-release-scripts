@@ -114,3 +114,19 @@ scala-2:
     - file: project/DottySupport.scala
       pattern: val\s+dottyVersion\s*=\s*"{scala3_version_pattern}"
       replacement: val dottyVersion = "{release_version}"
+
+homebrew:
+  upstream: https://github.com/lampepfl/homebrew-brew
+  commit_directly: True
+  project_class:
+    module: release.ecosystem.overrides
+    class: Homebrew
+  test_spec:
+    command: echo 'No test available for Homebrew'
+  update_spec:
+    - file: dotty.rb
+      pattern: url\s+"https://github\.com/lampepfl/dotty/releases/download/{scala3_version_pattern}/scala3-{scala3_version_pattern}\.tar\.gz"
+      replacement: url "https://github.com/lampepfl/dotty/releases/download/{release_version}/scala3-{release_version}.tar.gz"
+    - file: dotty.rb
+      pattern: sha256 "[0-9a-z]+"
+      replacement: sha256 "$release_hash"

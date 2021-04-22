@@ -1,4 +1,4 @@
-import inquirer, yaml
+import inquirer, yaml, importlib, re
 
 def choice_loop(choices, prompt, task):
   choices_refined = choices.copy()
@@ -21,3 +21,7 @@ def load_data(name, release_version):
   with open('data/{0}'.format(name), 'r') as f:
     contents = f.read()
   return contents.format(release_version=release_version, **template_variables)
+
+def import_class(module, cls):
+  mymodule = importlib.import_module(module)
+  return getattr(mymodule, cls)

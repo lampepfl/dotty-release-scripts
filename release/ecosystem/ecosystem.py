@@ -13,7 +13,6 @@ def project_menu(project):
       'Test': lambda: p.test(),
       'Git Status': lambda: p.show_diff(),
       'Publish': lambda: p.publish(),
-      'Show Root Directory': lambda: p.print_root_dir(),
       'Open in Sublime': lambda: p.open_sublime_at_root(),
       'Go to Upstream': lambda: p.open_upstream(),
       'Go to Staging': lambda: p.open_staging(),

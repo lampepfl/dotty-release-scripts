@@ -1,4 +1,5 @@
 import tempfile, shutil, subprocess, os, re, json, textwrap
+from release import util
 
 class Project:
   def __init__(self, name, release_version, d):
@@ -13,12 +14,16 @@ class Project:
     if not hasattr(self, 'staging_branch'):
       self.staging_branch = self.template('scala3-release-{release_version}')
 
+    if hasattr(self, 'project_class'):
+      self.__class__ = util.import_class(self.project_class['module'], self.project_class['class'])
+
   def __enter__(self):
     self.root_dir = tempfile.mkdtemp()
     self.project_dir = os.path.join(self.root_dir, self.name)
 
     subprocess.run(self.template('''
       git clone {upstream} {name}
+      cd {name}
       git checkout {upstream_branch}
     '''), cwd=self.root_dir, shell=True)
 
