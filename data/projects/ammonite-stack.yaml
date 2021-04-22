@@ -1,6 +1,7 @@
 utest:
   upstream: https://github.com/com-lihaoyi/utest
   staging: https://github.com/dotty-staging/utest
+  project_class: release.ecosystem.overrides.Ammonite
   test_spec:
     command: time ./mill -i utest.jvm[{release_version}].test
   update_spec:
@@ -11,6 +12,7 @@ utest:
 sourcecode:
   upstream: https://github.com/com-lihaoyi/sourcecode
   staging: https://github.com/dotty-staging/sourcecode
+  project_class: release.ecosystem.overrides.Ammonite
   test_spec:
     command: time ./mill -i sourcecode.jvm[{release_version}].test
   update_spec:
@@ -21,6 +23,7 @@ sourcecode:
 geny:
   upstream: https://github.com/com-lihaoyi/geny
   staging: https://github.com/dotty-staging/geny
+  project_class: release.ecosystem.overrides.Ammonite
   test_spec:
     command: time ./mill -i geny.jvm[{release_version}].test
   update_spec:
@@ -31,6 +34,7 @@ geny:
 fansi:
   upstream: https://github.com/com-lihaoyi/fansi
   staging: https://github.com/dotty-staging/fansi
+  project_class: release.ecosystem.overrides.Ammonite
   test_spec:
     command: time ./mill -i fansi.jvm[{release_version}].test
   update_spec:
@@ -48,35 +52,71 @@ upickle:
     - file: build.sc
       pattern: val scala3    = "{scala3_version_pattern}"
       replacement: val scala3    = "{release_version}"
-    - file: build.sc
-      bump_patch: 'com.lihaoyi::utest::0.7.$patch_version'
+  latest_comlihaoyi_version:
+    - utest
+    - geny
+    - sourcecode
 
 os-lib:
   upstream: https://github.com/com-lihaoyi/os-lib
   staging: https://github.com/dotty-staging/os-lib
+  project_class: release.ecosystem.overrides.Ammonite
   test_spec:
     command: time ./mill -i os.jvm[{release_version}].test
   update_spec:
     - file: build.sc
       pattern: ':: "{scala3_version_pattern}" :: dottyVersions'
       replacement: ':: "{release_version}" :: dottyVersions'
+  latest_comlihaoyi_version:
+    - utest
+    - geny
+    - sourcecode
 
 pprint:
   upstream: https://github.com/com-lihaoyi/PPrint
   staging: https://github.com/dotty-staging/pprint
+  project_class: release.ecosystem.overrides.Ammonite
   test_spec:
     command: time ./mill -i pprint.jvm[{release_version}].test
   update_spec:
     - file: build.sc
       pattern: ':: "{scala3_version_pattern}" :: dottyVersions'
       replacement: ':: "{release_version}" :: dottyVersions'
+  latest_comlihaoyi_version:
+    - fansi
+    - utest
+    - sourcecode
 
 requests:
   upstream: https://github.com/com-lihaoyi/requests-scala
   staging: https://github.com/dotty-staging/requests-scala
+  project_class: release.ecosystem.overrides.Ammonite
   test_spec:
     command: time ./mill -i requests[{release_version}].test
   update_spec:
     - file: build.sc
-      pattern: '"{scala3_version_pattern}") ++ dottyVersion'
+      pattern: '"{scala3_version_pattern}"\) \+\+ dottyVersion'
       replacement: '"{release_version}") ++ dottyVersion'
+  latest_comlihaoyi_version:
+    - utest
+    - geny
+    - project: upickle
+      artefact: ujson
+
+cask:
+  upstream: https://github.com/com-lihaoyi/cask
+  staging: https://github.com/dotty-staging/cask
+  project_class: release.ecosystem.overrides.Ammonite
+  test_spec:
+    command: time ./mill -i _.jvm[{release_version}].test
+  update_spec:
+    - file: build.sc
+      pattern: val scala3 = "{scala3_version_pattern}"
+      replacement: val scala3 = "{release_version}"
+  latest_comlihaoyi_version:
+    - utest
+    - upickle
+    - requests
+    - sourcecode
+    - pprint
+    - geny

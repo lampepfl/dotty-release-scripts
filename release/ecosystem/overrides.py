@@ -21,17 +21,22 @@ class Homebrew(Project):
 
 class Ammonite(Project):
   def update(self):
-    for entry in self.update_spec:
-      if 'bump_patch' in entry:
-        full_path = os.path.join(self.project_dir, entry['file'])
-        with open(full_path, 'r') as f:
-          src = f.read()
-          pattern = Template(entry['bump_patch'])
-          patchVersion = int(re.search(pattern.substitute(
-            patch_version='(\\d+)'), src).group(1))
+    if hasattr(self, 'latest_comlihaoyi_version'):
+      for dep_entry in self.latest_comlihaoyi_version:
+        if isinstance(dep_entry, dict):
+          dep = dep_entry['artefact']
+          dep_project = dep_entry['project']
+        else:
+          dep = dep_project = dep_entry
 
-          entry['pattern'] = pattern.substitute(patch_version=patchVersion)
-          entry['replacement'] = pattern.substitute(patch_version=patchVersion+1)
-          del entry['bump_patch']
+        dep_template = Template('com.lihaoyi::{dep}::$version'.format(dep=dep))
+        latest_version = requests.get(
+          'https://github.com/com-lihaoyi/{dep_project}/releases/latest'.format(dep_project=dep_project)
+        ).url.split('/')[-1]
 
+        self.update_spec.append({
+          'file': 'build.sc',
+          'pattern': dep_template.substitute(version='[\\d\\.]+'),
+          'replacement': dep_template.substitute(version=latest_version)
+        })
     super().update()
