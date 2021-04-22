@@ -71,7 +71,7 @@ class Project:
   def publish(self):
     if self.commit_directly:
       command = self.command('''
-        git commit -am {release_version}
+        git commit -am "Upgrade Dotty to {release_version}"
         git push
       ''')
       subprocess.run(command, cwd=self.project_dir, shell=True)
