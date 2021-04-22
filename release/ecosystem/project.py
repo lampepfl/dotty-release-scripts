@@ -15,8 +15,10 @@ class Project:
       self.staging_branch = self.template('scala3-release-{release_version}')
 
     if hasattr(self, 'project_class'):
-      module = importlib.import_module(self.project_class['module'])
-      self.__class__ = getattr(module, self.project_class['class'])
+      class_name_tokens = self.project_class.split('.')
+      module_name = '.'.join(class_name_tokens[:-1])
+      class_name = class_name_tokens[-1]
+      self.__class__ = getattr(importlib.import_module(module_name), class_name)
 
   def __enter__(self):
     self.root_dir = tempfile.mkdtemp()

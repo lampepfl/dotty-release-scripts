@@ -41,12 +41,15 @@ fansi:
 upickle:
   upstream: https://github.com/com-lihaoyi/upickle
   staging: https://github.com/dotty-staging/upickle
+  project_class: release.ecosystem.overrides.Ammonite
   test_spec:
     command: time ./mill -i _.jvm[{release_version}].test
   update_spec:
     - file: build.sc
       pattern: val scala3    = "{scala3_version_pattern}"
       replacement: val scala3    = "{release_version}"
+    - file: build.sc
+      bump_patch: 'com.lihaoyi::utest::0.7.$patch_version'
 
 os-lib:
   upstream: https://github.com/com-lihaoyi/os-lib
