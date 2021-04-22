@@ -130,3 +130,13 @@ homebrew:
     - file: dotty.rb
       pattern: sha256 "[0-9a-z]+"
       replacement: sha256 "$release_hash"
+
+dotty:
+  upstream: https://github.com/lampepfl/dotty
+  staging: https://github.com/dotty-staging/dotty
+  test_spec:
+    command: echo 'No test available for Dotty'
+  update_spec:
+    - file: project/Build.scala
+      pattern: val\s+referenceVersion\s*=\s*"{scala3_version_pattern}"
+      replacement: val referenceVersion = "{release_version}"
