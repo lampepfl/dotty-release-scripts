@@ -1,6 +1,7 @@
-import requests, os, re
+import requests, os, re, textwrap, subprocess
 from release.ecosystem.project import Project
 from string import Template
+import inquirer
 
 class Homebrew(Project):
   def __enter__(self):
@@ -59,3 +60,27 @@ class Ammonite(Project):
           'replacement': dep_template.substitute(version=latest_version)
         })
     super().update()
+
+  def release_to_maven(self):
+    latest_release = requests.get(
+      'https://github.com/com-lihaoyi/{name}/releases/latest'.format(name=self.name)
+    ).url.split('/')[-1]
+
+    major, minor, patch = latest_release.split('.')
+    this_release = '.'.join([major, minor, str(int(patch)+1)])
+
+    user_specified_next_version = inquirer.prompt([
+      inquirer.Text('version', message='Version to release? [{0}]'.format(this_release)),
+    ])['version']
+    if user_specified_next_version != '':
+      this_release = user_specified_next_version
+
+    subprocess.run(textwrap.dedent('''
+      git tag {this_release}
+      git push --tag origin {this_release}
+    '''.format(this_release=this_release)), cwd=self.project_dir, shell=True)
+
+  def project_menu(self):
+    menu = super().project_menu()
+    menu.update({'Release to Maven': lambda: self.release_to_maven()})
+    return menu
