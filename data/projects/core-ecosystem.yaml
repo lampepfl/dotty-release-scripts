@@ -135,7 +135,6 @@ scala-2:
 
 homebrew:
   upstream: https://github.com/lampepfl/homebrew-brew
-  commit_directly: True
   project_class: release.ecosystem.overrides.Homebrew
   test_spec:
     command: echo 'No test available for Homebrew'

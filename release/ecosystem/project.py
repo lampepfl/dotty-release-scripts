@@ -1,4 +1,6 @@
 import tempfile, shutil, subprocess, os, re, json, textwrap, importlib
+from string import Template
+import inquirer
 from release import util
 
 class Project:
@@ -30,11 +32,9 @@ class Project:
       git checkout {upstream_branch}
     '''), cwd=self.root_dir, shell=True)
 
-    if not self.commit_directly:
-      subprocess.run(self.template('''
-        git remote add staging {staging}
-      '''), cwd=self.project_dir, shell=True)
-
+    subprocess.run(self.template('''
+      git remote add staging {staging}
+    '''), cwd=self.project_dir, shell=True)
     return self
 
   def __exit__(self, exc_type, exc_val, exc_tb):
@@ -43,8 +43,36 @@ class Project:
   def template(self, cmd):
     return textwrap.dedent(cmd.format(**self.__dict__))
 
+  def submit_pr(self, staging_branch, commit_message):
+    command = textwrap.dedent('''
+      git checkout -b {staging_branch}
+      git commit -am "{commit_message}"
+      git push -u staging
+      open "{upstream}/compare/{upstream_branch}...dotty-staging:{staging_branch}"
+    ''').format(
+      staging_branch = staging_branch,
+      commit_message = commit_message,
+      upstream = self.upstream,
+      upstream_branch = self.upstream_branch
+    )
+    subprocess.run(command, cwd=self.project_dir, shell=True)
+
 
   ### User-facing Menu Methods ###
+  def project_menu(self):
+    return {
+      'Update': lambda: self.update(),
+      'Test': lambda: self.test(),
+      'Git Status': lambda: self.show_diff(),
+      'Publish': lambda: self.publish(),
+      'Submit custom PR': lambda: self.prepare_custom_pr(),
+      'Open in Sublime': lambda: self.open_sublime_at_root(),
+      'Go to Upstream': lambda: self.open_upstream(),
+      'Go to Staging': lambda: self.open_staging(),
+      'Delete Staging Branch': lambda: self.delete_staging_branch(),
+      'Debug Project': lambda: self.debug(),
+    }
+
   def open_sublime_at_root(self):
     subprocess.run(self.template('subl {root_dir}'), shell=True)
 
@@ -71,20 +99,14 @@ class Project:
     subprocess.run('git diff', cwd=self.project_dir, shell=True)
 
   def publish(self):
-    if self.commit_directly:
-      command = self.template('''
-        git commit -am "Upgrade Dotty to {release_version}"
-        git push
-      ''')
-      subprocess.run(command, cwd=self.project_dir, shell=True)
-    else:
-      command = self.template('''
-        git checkout -b {staging_branch}
-        git commit -am "Upgrade Dotty to {release_version}"
-        git push -u staging
-        open "{upstream}/compare/{upstream_branch}...dotty-staging:{staging_branch}"
-      ''')
-      subprocess.run(command, cwd=self.project_dir, shell=True)
+    self.submit_pr(self.staging_branch, "Upgrade Dotty to " + self.release_version)
+
+  def prepare_custom_pr(self):
+    answers = inquirer.prompt([
+      inquirer.Text('commit_message', message="Commit message"),
+      inquirer.Text('branch_name', message="Staging branch name"),
+    ])
+    self.submit_pr(answers['branch_name'], answers['commit_message'])
 
   def open_staging(self):
     subprocess.run(self.template('open {staging}'), shell=True)

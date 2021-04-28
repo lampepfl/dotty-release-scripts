@@ -14,16 +14,4 @@ def select_project(file, release_version):
 
 def project_menu(project):
   with project as p:
-    choice_loop({
-      'Update': lambda: p.update(),
-      'Test': lambda: p.test(),
-      'Git Status': lambda: p.show_diff(),
-      'Publish': lambda: p.publish(),
-      'Open in Sublime': lambda: p.open_sublime_at_root(),
-      'Go to Upstream': lambda: p.open_upstream(),
-      'Go to Staging': lambda: p.open_staging(),
-      'Delete Staging Branch': lambda: p.delete_staging_branch(),
-      'Debug Project': lambda: p.debug(),
-    },
-    'What should we do?',
-    lambda task: task())
+    choice_loop(p.project_menu(), 'What should we do?', lambda task: task())
