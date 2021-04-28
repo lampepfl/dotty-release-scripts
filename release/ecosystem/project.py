@@ -34,6 +34,7 @@ class Project:
 
     subprocess.run(self.template('''
       git remote add staging {staging}
+      git fetch --all --prune
     '''), cwd=self.project_dir, shell=True)
     return self
 
