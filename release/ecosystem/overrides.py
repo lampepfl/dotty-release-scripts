@@ -42,6 +42,9 @@ class Homebrew(Project):
 class Ammonite(Project):
   def update(self):
     if hasattr(self, 'latest_comlihaoyi_version'):
+      all_buildfiles = [ os.path.relpath(os.path.join(root, 'build.sc'), self.project_dir)
+        for root, _, files in os.walk(self.project_dir) if 'build.sc' in files ]
+
       for dep_entry in self.latest_comlihaoyi_version:
         if isinstance(dep_entry, dict):
           dep = dep_entry['artefact']
@@ -54,11 +57,12 @@ class Ammonite(Project):
           'https://github.com/com-lihaoyi/{dep_project}/releases/latest'.format(dep_project=dep_project)
         ).url.split('/')[-1]
 
-        self.update_spec.append({
-          'file': 'build.sc',
-          'pattern': dep_template.substitute(version='[\\d\\.]+'),
-          'replacement': dep_template.substitute(version=latest_version)
-        })
+        for buildfile in all_buildfiles:
+          self.update_spec.append({
+            'file': buildfile,
+            'pattern': dep_template.substitute(version='[\\d\\.]+'),
+            'replacement': dep_template.substitute(version=latest_version)
+          })
     super().update()
 
   def release_to_maven(self):
