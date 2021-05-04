@@ -87,7 +87,7 @@ pprint:
     - utest
     - sourcecode
 
-requests:
+requests-scala:
   upstream: https://github.com/com-lihaoyi/requests-scala
   staging: https://github.com/dotty-staging/requests-scala
   project_class: release.ecosystem.overrides.Ammonite
@@ -108,7 +108,7 @@ cask:
   staging: https://github.com/dotty-staging/cask
   project_class: release.ecosystem.overrides.Ammonite
   test_spec:
-    command: time ./mill -i _.jvm[{release_version}].test
+    command: ./mill -i --disable-ticker __.testLocal
   update_spec:
     - file: build.sc
       pattern: val scala3 = "{scala3_version_pattern}"
@@ -116,7 +116,8 @@ cask:
   latest_comlihaoyi_version:
     - utest
     - upickle
-    - requests
+    - project: requests-scala
+      artefact: requests
     - sourcecode
     - pprint
     - geny
