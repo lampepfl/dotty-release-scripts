@@ -1,4 +1,4 @@
-import requests, os, re, textwrap, subprocess
+import requests, os, re, textwrap, subprocess, tempfile
 from release.ecosystem.project import Project
 from string import Template
 import inquirer
