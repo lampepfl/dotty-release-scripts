@@ -1,3 +1,3 @@
 This repository contains scripts assisting in Dotty release. To get started, first, install the dependencies via `pip3 install -r requirements.txt`, then, launch the script via `./main.py`.
 
-If you are looking to change the release issue checklist, see the [checklist.md](data/checklist.md) file. If you are looking to add a new project to be managed on every release, see [projects.yaml](data/projects.yaml) file.
+If you are looking to change the release issue checklist, see the [checklist.md](data/checklist.md) file. If you are looking to add a new project to be managed on every release, see [projects](data/projects/) folder. You can submit a PR to add a new `yaml` file for a new ecosystem or an existing project to an existing ecosystem.
