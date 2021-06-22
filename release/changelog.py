@@ -1,12 +1,19 @@
 import sys, re
 
 pipeline = [
+  # Clean-up
   ['Remove assignees', '^@[\\w-]+$', ''],
-  ['Remove comment counts', '^\\s\\d+', ''],
+  ['Remove checklist status tracker (2 of 2)', '^\\d+ of \\d+$', ''],
+  ['Remove status starting with •', '^•.*', ''],
+  ['Remove comment counts & milestones', '^\\s+[0-9\\-\\.RC]+$', ''],
   ['Remove tags', '  .*$', ''],
+
+  # Add links to PRs and issues
   ['Process PR numbers', '^#(\\d+) by .*', '[#\\1](https://github.com/lampepfl/dotty/pull/\\1)'],
   ['Process issue numbers', '[fF]ix #(\\d+)', 'Fix [#\\1](https://github.com/lampepfl/dotty/issues/\\1)'],
   ['Make each issue on one line', '\\s*\\n+^\\[#', ' [#'],
+
+  # Finalization
   ['Remove multiple newlines', '\\n+', '\\n'],
   ['Make it a markdown list', '^(.)', '- \\1']
 ]
